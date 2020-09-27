@@ -13,11 +13,25 @@ class _HomePageState extends State<HomePage> {
     'https://dimg04.c-ctrip.com/images/700c10000000pdili7D8B_780_235_57.jpg',
   ];
 
+  _onScroll(offset) {
+    print(offset);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-          child: Column(
+      body: MediaQuery.removePadding(
+        removeTop: true,
+        context: context,
+        child: NotificationListener(
+          onNotification: (srcollNotification) {
+            if (srcollNotification is ScrollUpdateNotification &&
+                srcollNotification.depth == 1) {
+              _onScroll(srcollNotification.metrics.pixels);
+            }
+            return null;
+          },
+          child: ListView(
             children: <Widget>[
               Container(
                 height: 160,
@@ -30,10 +44,19 @@ class _HomePageState extends State<HomePage> {
                       fit: BoxFit.fill,
                     );
                   },
+                  pagination: SwiperPagination(),
+                ),
+              ),
+              Container(
+                height: 800,
+                child: ListTile(
+                  title: Text('哈哈'),
                 ),
               ),
             ],
-          )),
+          ),
+        ),
+      ),
     );
   }
 }
